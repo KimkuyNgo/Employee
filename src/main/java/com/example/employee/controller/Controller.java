@@ -11,7 +11,7 @@ import java.security.Principal;
 public class Controller {
 
     @GetMapping({"register.html"})
-    public String view() {
+    public String showregister() {
         return "register";
     }
 
