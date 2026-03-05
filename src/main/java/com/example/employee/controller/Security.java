@@ -11,22 +11,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class Security {
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/css/**").permitAll() // Allow everyone to see these
-                        .anyRequest().authenticated() // Everything else needs a login
+                        // Use "/**" to permit every single URL, including CSS and JS
+                        .requestMatchers("/**").permitAll()
                 )
-                .formLogin(form -> form
-                        .loginPage("/login") // Tells Spring to use your custom /login URL
-                        .defaultSuccessUrl("/dashboard", true) // Where to go after login
-                        .permitAll()
-                )
-                .logout(logout -> logout.permitAll());
+                .formLogin(form -> form.disable())
+                .logout(logout -> logout.disable());
 
         return http.build();
     }
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

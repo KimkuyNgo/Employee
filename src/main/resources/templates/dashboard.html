@@ -1,43 +1,84 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Dashboard</title>
+    <title>Employee Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; }
+        .jumbotron {
+            background-color: #ffffff;
+            border: 1px solid #e3e6f0;
+            border-radius: 0.75rem;
+            padding: 2rem;
+        }
+        .card-border-info { border-left: 5px solid #0dcaf0 !important; border-top: 1px solid #dee2e6; }
+        .card-border-success { border-left: 5px solid #198754 !important; border-top: 1px solid #dee2e6; }
+        .table thead { background-color: #4e73df; color: white; }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container">
-        <span class="navbar-brand">Employee Management</span>
-        <form th:action="@{/logout}" method="post">
-            <button class="btn btn-outline-danger btn-sm" type="submit">Logout</button>
+<div class="container mt-4">
+    <div class="jumbotron mb-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="display-6">Management Overview</h1>
+            <a th:href="@{/register}" class="btn btn-primary btn-lg">+ Add Employee</a>
+        </div>
+        <hr class="my-4">
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card card-border-info h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <h5 class="card-title text-info">System Status</h5>
+                        <p class="card-text fs-4">Total Employees: <span class="fw-bold text-dark" th:text="${employees.size()}">0</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card card-border-success h-100 shadow-sm text-center">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <h5 class="card-title text-success">Total Payroll</h5>
+                        <p class="card-text fs-4 fw-bold text-dark">$<span th:text="${totalPayroll}">0.00</span></p>
+                    </div>
+                </div>
+            </div>
+        </div> </div> <div class="card shadow-sm border-0 mt-4">
+    <div class="card-header bg-dark text-white d-flex align-items-center py-3 px-4">
+        <h5 class="mb-0 fw-bold">Employee Directory</h5>
+        <form th:action="@{/dashboard}" method="get" class="d-flex ms-auto gap-2" style="max-width: 450px;">
+            <div class="input-group">
+                <input type="text" name="keyword" th:value="${keyword}"
+                       class="form-control border-0 shadow-sm"
+                       placeholder="Search name..."
+                       style="border-radius: 5px 0 0 5px;">
+                <button class="btn btn-primary px-4 shadow-sm" type="submit">Search</button>
+            </div>
+            <a th:href="@{/dashboard}" class="btn btn-outline-light px-3 shadow-sm">Reset</a>
         </form>
     </div>
-</nav>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+            <tr>
+                <th class="ps-4">Name</th>
+                <th>Email</th>
+                <th>Salary</th>
+                <th class="text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="emp : ${employees}">
+                <td class="ps-4" th:text="${emp.name}">Name</td>
+                <td th:text="${emp.email}">Email</td>
+                <td th:text="${'$' + emp.salary}">$0.00</td>
+                <td class="text-center">
+                    <a th:href="@{/edit/{id}(id=${emp.id})}" class="btn btn-sm btn-warning mx-1">Edit</a>
+                    <a th:href="@{/delete/{id}(id=${emp.id})}" class="btn btn-sm btn-danger mx-1" onclick="return confirm('Delete this record?')">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-<div class="container">
-    <div class="jumbotron bg-light p-5 rounded border">
-        <h1>Welcome, <span th:text="${employee.name}">User</span>!</h1>
-        <hr class="my-4">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card border-info">
-                    <div class="card-body">
-                        <h5 class="card-title text-info">Account Details</h5>
-                        <p class="card-text"><strong>Email:</strong> <span th:text="${employee.email}">Email</span></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card border-success">
-                    <div class="card-body text-center">
-                        <h5 class="card-title text-success">Monthly Salary</h5>
-                        <h2 class="display-4 font-weight-bold">$<span th:text="${employee.salary}">0.00</span></h2>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
-</body>
+</div> </div> </body>
 </html>
