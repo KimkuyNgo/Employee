@@ -24,7 +24,12 @@ public class AdminController {
 
     @GetMapping("/admin/register")
     public String showAdminRegister() {
-        return "admin-register"; // Points to admin-register.html
+        return "admin-register"; // Points to admin-addemployee.html
+    }
+
+    @GetMapping("/")
+    public String showHomePage() {
+        return "homepage"; // This opens index.html
     }
 
     @GetMapping("/admin/login")
@@ -38,13 +43,7 @@ public class AdminController {
         return "redirect:/admin/login"; // Sends them back to the login page
     }
 
-    @GetMapping("/register")
-    public String showAddEmployeePage(HttpSession session) {
-        if (session.getAttribute("adminName") == null) {
-            return "redirect:/admin/login";
-        }
-        return "register"; // Points to your old register.html (now for adding employees)
-    }
+
     @PostMapping("/admin/login")
     public String loginAdmin(@RequestParam String email, @RequestParam String password, HttpSession session) {
         Optional<Admin> admin = adminRepo.findByEmail(email);
