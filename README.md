@@ -4,7 +4,7 @@
 <p>so we need to fix it. First i need to change the code in application.properties: localhost to ${PGHOST}, serverport to ${PGPORT}, name of database to ${PGDATABASE} this for url and then change username to ${PGUSER} and password to ${PGPASSWORD}</p>
 <p>next we need to copy the value of PGDATABASE,PGHOST(copy url from public network domain),PGPORT(number in url from public network domain),PGPASSWORD,PGUSER from variable in PostgreSQL dtabase and paste it into variable of springboot project</p>
 <p>then deploy it and it will success</p><br>
-<h2>what i use inn this project:</h2>
+<h2>what i use in this project:</h2>
 <p>- Railway for deploy</p>
 <p>- IDE for SpringBoot</p>
 <p>- PostgreSQL for Database</p>
