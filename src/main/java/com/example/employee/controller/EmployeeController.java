@@ -44,15 +44,19 @@ public class EmployeeController {
 
         List<Employee> list;
         if (keyword != null && !keyword.trim().isEmpty()) {
-            // Filter by name AND the specific admin
             list = repo.findByNameContainingIgnoreCaseAndAdmin(keyword, currentAdmin);
         } else {
-            // Get all employees for THIS admin only
             list = repo.findByAdmin(currentAdmin);
         }
 
+        double totalPayroll = list.stream()
+                .mapToDouble(e -> e.getSalary() != null ? e.getSalary() : 0)
+                .sum();
+
         model.addAttribute("employees", list);
-        // ... rest of your code ...
+        model.addAttribute("totalPayroll", totalPayroll); // THIS connects to th:text="${totalPayroll}"
+        model.addAttribute("keyword", keyword);
+
         return "dashboard";
     }
 
