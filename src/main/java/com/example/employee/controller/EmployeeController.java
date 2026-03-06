@@ -1,5 +1,6 @@
 package com.example.employee.controller;
 
+import com.example.employee.module.Admin;
 import com.example.employee.module.Employee;
 import com.example.employee.repository.AdminRepository;
 import com.example.employee.repository.EmployeeRepository;
@@ -35,24 +36,23 @@ public class EmployeeController {
 
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model, @RequestParam(name = "keyword", required = false) String keyword) {
-        // 1. Security Check FIRST
-        if (session.getAttribute("adminName") == null) {
+        Admin currentAdmin = (Admin) session.getAttribute("loggedInAdmin");
+
+        if (currentAdmin == null) {
             return "redirect:/admin/login";
         }
 
-        // 2. Search Logic
-        List<Employee> list = (keyword != null && !keyword.trim().isEmpty())
-                ? repo.findByNameContainingIgnoreCase(keyword)
-                : repo.findAll();
-
-        // 3. Calculation Logic
-        double totalPayroll = list.stream()
-                .mapToDouble(e -> e.getSalary() != null ? e.getSalary() : 0)
-                .sum();
+        List<Employee> list;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            // Filter by name AND the specific admin
+            list = repo.findByNameContainingIgnoreCaseAndAdmin(keyword, currentAdmin);
+        } else {
+            // Get all employees for THIS admin only
+            list = repo.findByAdmin(currentAdmin);
+        }
 
         model.addAttribute("employees", list);
-        model.addAttribute("totalPayroll", totalPayroll);
-        model.addAttribute("keyword", keyword);
+        // ... rest of your code ...
         return "dashboard";
     }
 

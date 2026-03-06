@@ -20,4 +20,12 @@ public class Employee {
 
     private String password;
     private Double salary;
+
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private Admin admin; // Links the employee to a specific admin
+
+    // Add Getter and Setter
+    public Admin getAdmin() { return admin; }
+    public void setAdmin(Admin admin) { this.admin = admin; }
 }

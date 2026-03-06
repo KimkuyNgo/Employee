@@ -49,7 +49,9 @@ public class AdminController {
         Optional<Admin> admin = adminRepo.findByEmail(email);
 
         if (admin.isPresent() && encoder.matches(password, admin.get().getPassword())) {
+            // Store both Name and the Admin Object/ID
             session.setAttribute("adminName", admin.get().getUsername());
+            session.setAttribute("loggedInAdmin", admin.get());
             return "redirect:/dashboard";
         }
         return "redirect:/admin/login?error";
@@ -66,10 +68,14 @@ public class AdminController {
 
     @PostMapping("/saveEmployee")
     public String saveEmployee(Employee emp, HttpSession session) {
-        if (session.getAttribute("adminName") == null) {
+        Admin currentAdmin = (Admin) session.getAttribute("loggedInAdmin");
+
+        if (currentAdmin == null) {
             return "redirect:/admin/login";
         }
-        // Encode the password before saving to the 'employees' table
+
+        emp.setAdmin(currentAdmin); // Link the new employee to this admin
+
         if (emp.getPassword() != null) {
             emp.setPassword(encoder.encode(emp.getPassword()));
         }
