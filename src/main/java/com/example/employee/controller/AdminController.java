@@ -24,7 +24,7 @@ public class AdminController {
     @Autowired private BCryptPasswordEncoder encoder;
 
 
-    @GetMapping("/admin/register")
+    @GetMapping("/register")
     public String showAdminRegister() {
         return "admin-register"; // Points to admin-addemployee.html
     }
@@ -34,7 +34,7 @@ public class AdminController {
         return "homepage"; // This opens index.html
     }
 
-    @GetMapping("/admin/login")
+    @GetMapping("/login")
     public String showAdminLogin() {
         return "admin-login"; // Points to admin-login.html
     }
@@ -57,7 +57,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("/admin/login")
+    @PostMapping("/login")
     public String loginAdmin(@RequestParam String email, @RequestParam String password, HttpSession session) {
         Optional<Admin> admin = adminRepo.findByEmail(email);
 
@@ -72,7 +72,7 @@ public class AdminController {
 
 
     // ADMIN REGISTRATION
-    @PostMapping("/admin/register")
+    @PostMapping("/register")
     public String registerAdmin(Admin admin) {
         admin.setPassword(encoder.encode(admin.getPassword()));
         adminRepo.save(admin); // Saves to 'admins' table
