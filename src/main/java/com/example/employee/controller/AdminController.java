@@ -45,16 +45,7 @@ public class AdminController {
         return "redirect:/admin/login"; // Sends them back to the login page
     }
 
-    @GetMapping("/dashboard")
-    public String showDashboard(HttpSession session) {
-        // 1. Security Check: Make sure the admin is actually logged in
-        if (session.getAttribute("loggedInAdmin") == null) {
-            return "redirect:/admin/login"; // Kick them back if they aren't
-        }
 
-        // 2. Return the name of your HTML file (without .html)
-        return "dashboard";
-    }
 
 
     @PostMapping("/login")
