@@ -10,13 +10,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired private AdminRepository adminRepo;
@@ -24,7 +22,7 @@ public class AdminController {
     @Autowired private BCryptPasswordEncoder encoder;
 
 
-    @GetMapping("/register")
+    @GetMapping("/admin/register")
     public String showAdminRegister() {
         return "admin-register"; // Points to admin-addemployee.html
     }
@@ -34,7 +32,7 @@ public class AdminController {
         return "homepage"; // This opens index.html
     }
 
-    @GetMapping("/login")
+    @GetMapping("/admin/login")
     public String showAdminLogin() {
         return "admin-login"; // Points to admin-login.html
     }
@@ -48,7 +46,7 @@ public class AdminController {
 
 
 
-    @PostMapping("/login")
+    @PostMapping("/admin/login")
     public String loginAdmin(@RequestParam String email, @RequestParam String password, HttpSession session) {
         Optional<Admin> admin = adminRepo.findByEmail(email);
 
@@ -63,7 +61,7 @@ public class AdminController {
 
 
     // ADMIN REGISTRATION
-    @PostMapping("/register")
+    @PostMapping("/admin/register")
     public String registerAdmin(Admin admin) {
         admin.setPassword(encoder.encode(admin.getPassword()));
         adminRepo.save(admin); // Saves to 'admins' table
