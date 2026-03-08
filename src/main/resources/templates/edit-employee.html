@@ -48,29 +48,25 @@
                 </div>
 
                 <div class="card-body p-4">
-                    <form th:action="@{/update}" method="post">
-                        <input type="hidden" name="id" th:value="${employee.id}">
-                        <input type="hidden" name="password" th:value="${employee.password}">
+                    <form th:action="@{/update}" th:object="${employee}" method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <input type="hidden" th:field="*{password}">
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Full Name</label>
-                            <input type="text" name="name" th:value="${employee.name}"
-                                   class="form-control form-control-lg" required>
+                            <input type="text" th:field="*{name}" class="form-control form-control-lg" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Email Address</label>
-                            <input type="email" name="email" th:value="${employee.email}"
-                                   class="form-control bg-light" readonly>
-                            <div class="form-text text-muted">Email address cannot be modified.</div>
+                            <input type="email" th:field="*{email}" class="form-control bg-light" readonly>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label fw-bold">Monthly Salary</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-success text-white">$</span>
-                                <input type="number" name="salary" th:value="${employee.salary}"
-                                       class="form-control border-success" step="0.01" required>
+                                <input type="number" th:field="*{salary}" class="form-control border-success" step="0.01" required>
                             </div>
                         </div>
 

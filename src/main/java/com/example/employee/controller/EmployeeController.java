@@ -75,13 +75,23 @@ public class EmployeeController {
 
     @PostMapping("/update")
     public String updateEmployee(@ModelAttribute Employee emp, HttpSession session) {
-        // SECURITY CHECK
         if (session.getAttribute("adminName") == null) {
             return "redirect:/admin/login";
         }
 
-        // Keep the old password if not changing it, or re-encode if it's new
-        repo.save(emp); // Saves to the 'employees' table in public schema
+        // 1. Fetch the original record from DB to prevent losing fields not in the form
+        Employee existingEmp = repo.findById(emp.getId()).orElseThrow();
+
+        // 2. Update only the allowed fields
+        existingEmp.setName(emp.getName());
+        existingEmp.setSalary(emp.getSalary());
+        // Note: We don't update email or password here to keep them secure
+
+        // 3. Ensure admin link is still there
+        Admin currentAdmin = (Admin) session.getAttribute("loggedInAdmin");
+        existingEmp.setAdmin(currentAdmin);
+
+        repo.save(existingEmp);
         return "redirect:/dashboard";
     }
 
