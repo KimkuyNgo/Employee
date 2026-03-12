@@ -76,12 +76,10 @@ public class AdminController {
             return "redirect:/admin/login";
         }
 
-        emp.setAdmin(currentAdmin); // This links the employee to the admin
+        emp.setAdmin(currentAdmin);
 
-        // Check if the salary is coming in as null from the form
-        if (emp.getSalary() == null) {
-            emp.setSalary(0.0);
-        }else if(emp.getSalary() < 0.0) {
+        // FIX: Check for null OR negative values
+        if (emp.getSalary() == null || emp.getSalary() < 0.0) {
             emp.setSalary(0.0);
         }
 

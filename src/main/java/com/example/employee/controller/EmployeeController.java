@@ -79,15 +79,18 @@ public class EmployeeController {
             return "redirect:/admin/login";
         }
 
-        // 1. Fetch the original record from DB to prevent losing fields not in the form
         Employee existingEmp = repo.findById(emp.getId()).orElseThrow();
 
-        // 2. Update only the allowed fields
+        // Update fields
         existingEmp.setName(emp.getName());
-        existingEmp.setSalary(emp.getSalary());
-        // Note: We don't update email or password here to keep them secure
 
-        // 3. Ensure admin link is still there
+        // FIX: Prevent negative salary during update
+        if (emp.getSalary() == null || emp.getSalary() < 0.0) {
+            existingEmp.setSalary(0.0);
+        } else {
+            existingEmp.setSalary(emp.getSalary());
+        }
+
         Admin currentAdmin = (Admin) session.getAttribute("loggedInAdmin");
         existingEmp.setAdmin(currentAdmin);
 
