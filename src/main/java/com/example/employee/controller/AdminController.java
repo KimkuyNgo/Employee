@@ -81,6 +81,8 @@ public class AdminController {
         // Check if the salary is coming in as null from the form
         if (emp.getSalary() == null) {
             emp.setSalary(0.0);
+        }else if(emp.getSalary() < 0.0) {
+            emp.setSalary(0.0);
         }
 
         employeeRepo.save(emp);
