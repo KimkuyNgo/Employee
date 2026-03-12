@@ -1,3 +1,5 @@
+<h2>Employee management</h2>
+<p>This project is about Employee management where we are the admin and we can control each employee salary. </p>
 <h2>how to deploy:</h2>
 <p>first we need to deploy a database which is PostgreSQL</p>
 <p>then deploy repository of the springboot project but for the first time it will crash</p>
@@ -12,3 +14,42 @@
 <p>- IDE for SpringBoot</p>
 <p>- PostgreSQL for Database</p>
 <p>- in Springboot i use thymeleaf, lombok, Spring web, Spring security, Spring Data JPA, PostgreSQL Driver</p>
+<h2>Link to Website:</h2><br>
+<a href="https://employee-production-b606.up.railway.app/">Link</a>
+<h2>Data Base Figure:</h2>
+
+@Table(name = "admins")
+public class Admin {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Setter
+    @Getter
+    private String username;
+    @Setter
+    @Getter
+    private String email;
+    @Setter
+    @Getter
+    private String password;}
+<br>
+    
+@Table(name = "employees")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    private String password;
+    private Double salary;
+    
